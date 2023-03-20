@@ -42,6 +42,6 @@ Cadena operator +(const Cadena& cad1, const Cadena& cad2);
 inline size_t Cadena::length() const noexcept{return tam;}
 inline char& Cadena::operator[](size_t i){return s[i];}
 inline const char& Cadena::operator[](size_t i) const{return s[i];}
-inline Cadena::operator const char*() const {return s;}
+inline Cadena::operator const char*() const{return s;}
 
 #endif 
