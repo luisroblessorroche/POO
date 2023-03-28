@@ -5,27 +5,33 @@
 
 //--------------------------CONSTRUCTORES---------------------------------
 
-Cadena::Cadena(size_t t, char c): s{new char[t+1]},tam{t}
+Cadena::Cadena(size_t t, char c): s_{new char[t+1]},tam_{t}
 {
-	for(size_t i = 0; i < tam; i++)
+	for(size_t i = 0; i < tam_; i++)
 	{
-		s[i] = c;
+		s_[i] = c;
 	}
-	s[tam] = '\0';
+	s_[tam_] = '\0';
 }
 
-Cadena::Cadena(const Cadena& cad): s{new char[cad.tam + 1]}, tam{cad.tam}{strcpy(s,cad.s);}
+Cadena::Cadena(const Cadena& cad): s_{new char[cad.tam_ + 1]}, tam_{cad.tam_}
+{
+	strcpy(s_,cad.s_);
+}
 
-Cadena::Cadena(const char* cad): s{new char[strlen(cad)+1]}, tam{strlen(cad)}{strcpy(s,cad);}
+Cadena::Cadena(const char* cad): s_{new char[strlen(cad)+1]}, tam_{strlen(cad)}
+{
+	strcpy(s_,cad);
+}
 
 Cadena& Cadena::operator =(const Cadena& cad)
 {
 	if(this != &cad)
 	{
-		delete[] s;
-		s = new char[cad.tam + 1];
-		tam = cad.tam;
-		strcpy(s,cad.s);
+		delete[] s_;
+		s_ = new char[cad.tam_ + 1];
+		tam_ = cad.tam_;
+		strcpy(s_,cad.s_);
 	}
 	return *this;
 }
@@ -33,13 +39,13 @@ Cadena& Cadena::operator =(const Cadena& cad)
 
 Cadena& Cadena::operator +=(const Cadena& cad)
 {
-	char* aux = new char[tam +1];
-	strcpy(aux,s);
-	tam += cad.tam;
-	delete[] s;
-	s = new char[tam + 1];
-	strcpy(s,aux);
-	strcat(s,cad.s);
+	char* aux = new char[tam_ +1];
+	strcpy(aux,s_);
+	tam_ += cad.tam_;
+	delete[] s_;
+	s_ = new char[tam_ + 1];
+	strcpy(s_,aux);
+	strcat(s_,cad.s_);
 	delete[] aux;
 	return *this;
 }
@@ -52,36 +58,74 @@ Cadena operator +(const Cadena& cad1, const Cadena& cad2)
 
 //-----------------------------OPERADORES LOGICOS------------------------------
 
-bool operator ==(const Cadena& cad1, const Cadena& cad2){return !strcmp(cad1,cad2);}
-bool operator !=(const Cadena& cad1, const Cadena& cad2){return strcmp(cad1,cad2);}
-bool operator <(const Cadena& cad1, const Cadena& cad2){return (strcmp(cad1,cad2) < 0);}
-bool operator >(const Cadena& cad1, const Cadena& cad2){return cad2 < cad1;}
-bool operator <=(const Cadena& cad1, const Cadena& cad2){return ((cad1 < cad2) || (cad1 == cad2));}
-bool operator >=(const Cadena& cad1, const Cadena& cad2){return ((cad1 > cad2) || (cad1 == cad2));}
+bool operator ==(const Cadena& cad1, const Cadena& cad2)
+{
+	return (strcmp(cad1,cad2) == 0);
+}
+
+bool operator !=(const Cadena& cad1, const Cadena& cad2)
+{
+	return !(cad1 == cad2);
+}
+
+bool operator <(const Cadena& cad1, const Cadena& cad2)
+{
+	return (strcmp(cad1,cad2) < 0);
+}
+
+bool operator >(const Cadena& cad1, const Cadena& cad2)
+{
+	return cad2 < cad1;
+}
+
+bool operator <=(const Cadena& cad1, const Cadena& cad2)
+{
+	return ((cad1 < cad2) || (cad1 == cad2));
+}
+
+bool operator >=(const Cadena& cad1, const Cadena& cad2)
+{
+	return ((cad1 > cad2) || (cad1 == cad2));
+}
 
 
 //----------------------------FUNCIONES AT--------------------------------
 
 char& Cadena::at(size_t i)
 {
-	if(i<tam){return s[i];}
-	else{throw std::out_of_range("Funcion at(): fuera del rango permitido");}
+	if(i<tam_)
+	{
+		return s_[i];
+	}
+	else
+	{
+		throw std::out_of_range("Funcion at(): fuera del rango permitido");
+	}
 }
 
 const char& Cadena::at(size_t i) const
 {
-	if(i < tam){return s[i];}
-	else{throw std::out_of_range("Funcion at(): fuera del rango permitido");}
+	if(i < tam_)
+	{
+		return s_[i];
+	}
+	else
+	{
+		throw std::out_of_range("Funcion at(): fuera del rango permitido");
+	}
 }
 
 Cadena Cadena::substr(size_t i, size_t t) const
 {
-	if(i+t> tam || t > tam || i > tam){throw std::out_of_range("Funcion substr(): fuera del rango permitido");}
+	if(i+t> tam_ || t > tam_ || i > tam_)
+	{
+		throw std::out_of_range("Funcion substr(): fuera del rango permitido");
+	}
 	else
 	{
 		Cadena aux(t);
-		strncpy(aux.s,s+i,t);
-		aux.s[t] = '\0';
+		strncpy(aux.s_,s_+i,t);
+		aux.s_[t] = '\0';
 		return aux;
 	}
 }
@@ -91,6 +135,6 @@ Cadena Cadena::substr(size_t i, size_t t) const
 
 Cadena::~Cadena()
 {
-	delete[] s;
-	tam = 0;
+	delete[] s_;
+	tam_ = 0;
 }

@@ -55,9 +55,24 @@ bool operator <=(const Fecha& f1, const Fecha& f2);
 bool operator >=(const Fecha& f1, const Fecha& f2);
 
 
-inline const char* Fecha::Invalida::por_que() const{return motivo;}
-inline int Fecha::dia() const noexcept{return d;}
-inline int Fecha::mes() const noexcept{return m;}
-inline int Fecha::anno() const noexcept{return a;}
+inline const char* Fecha::Invalida::por_que() const
+{
+	return motivo;
+}
+
+inline int Fecha::dia() const noexcept
+{
+	return d;
+}
+
+inline int Fecha::mes() const noexcept
+{
+	return m;
+}
+
+inline int Fecha::anno() const noexcept
+{
+	return a;
+}
 
 #endif
