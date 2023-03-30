@@ -1,6 +1,6 @@
 #include "cadena.hpp"
-#include <cstring>
 #include <iostream>
+#include <cstring>
 #include <stdexcept>
 
 //--------------------------CONSTRUCTORES---------------------------------
@@ -24,14 +24,21 @@ Cadena::Cadena(const char* cad): s_{new char[strlen(cad)+1]}, tam_{strlen(cad)}
 	strcpy(s_,cad);
 }
 
+Cadena::Cadena(Cadena&& cad): s_{cad.s_}, tam_{strlen(cad)}
+{
+	cad.tam_ = 0;
+	cad.s_ = nullptr;
+}
+
 Cadena& Cadena::operator =(const Cadena& cad)
 {
 	if(this != &cad)
 	{
-		delete[] s_;
-		s_ = new char[cad.tam_ + 1];
 		tam_ = cad.tam_;
-		strcpy(s_,cad.s_);
+		delete[] s_;
+		s_ = cad.s_;
+		cad.s_ = nullptr;
+		cad.tam_ = 0;
 	}
 	return *this;
 }
@@ -130,11 +137,27 @@ Cadena Cadena::substr(size_t i, size_t t) const
 	}
 }
 
+
+//---------------------ENTRADA/SALIDA--------------------------
+
+std::omstream& operator <<(std::ostream& os, const Cadena& cad) noexcept
+{
+	os << cad.c_str();
+	return os;
+}
+
+std::istream& operator >>(std::istream& is, Cadena& cad)
+{
+	char linea[33]="";//¿cómo que 33?
+	is.width(33);
+	is >> linea;
+	cad = linea;
+	return is;
+}
 //---------------------------------DESTRUCTOR-------------------------------
 
 
 Cadena::~Cadena()
 {
 	delete[] s_;
-	tam_ = 0;
 }

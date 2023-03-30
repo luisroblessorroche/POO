@@ -1,6 +1,8 @@
 #ifndef _FECHA_HPP_
 #define _FECHA_HPP_
 
+#include <iostream>
+
 class Fecha
 {
 	public:
@@ -9,7 +11,7 @@ class Fecha
 		Fecha(const char* c);
 		Fecha& operator = (const Fecha&) = default;
 		
-		operator const char*() const;
+		const char* cadena() const;
 		
 		static const int AnnoMinimo = 1902;
 		static const int AnnoMaximo = 2037;
@@ -28,9 +30,9 @@ class Fecha
 		int anno() const noexcept;
 		
 		Fecha& operator ++();
-		Fecha& operator ++(int);
+		Fecha operator ++(int);
 		Fecha& operator --();
-		Fecha& operator --(int);
+		Fecha operator --(int);
 		Fecha& operator +=(int i);
 		Fecha& operator -=(int i);
 		
@@ -55,10 +57,7 @@ bool operator <=(const Fecha& f1, const Fecha& f2);
 bool operator >=(const Fecha& f1, const Fecha& f2);
 
 
-inline const char* Fecha::Invalida::por_que() const
-{
-	return motivo;
-}
+inline Fecha::Invalida::Invalida(const char* text): motivo(text){}
 
 inline int Fecha::dia() const noexcept
 {
@@ -74,5 +73,8 @@ inline int Fecha::anno() const noexcept
 {
 	return a;
 }
+
+std:: ostream& operator <<(std::ostream& os, const Fecha& f) noexcept;
+std::istream& operator >>(std::istream& is, Fecha& f);
 
 #endif
