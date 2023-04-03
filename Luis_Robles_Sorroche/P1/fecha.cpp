@@ -13,20 +13,17 @@ void Fecha::comprobar_validez()
 	//el rango del dia esta entre 1 y el ultimo dia dependiendo del mes, que puede ser 31,30,29,28 y 0 si esta mal
 	if(d > ultimo_dia() || d < 1)
 	{
-		Fecha::Invalida dia_invalido("Dia Invalido");
-		throw dia_invalido;
+		throw Invalida("Dia Invalido");
 	}
 	//el rango del mes esta entre 1 y 12
 	if(m < 1 || m > 12)
 	{
-		Fecha::Invalida mes_invalido("Mes invalido");
-		throw mes_invalido;
+		throw Invalida("Mes Invalido");
 	}
 	//el rango del anno esta entre 1902 y 2037
 	if(a < Fecha::AnnoMinimo || a > Fecha::AnnoMaximo)
 	{
-		Fecha::Invalida anno_invalido("Anno Invalido");
-		throw anno_invalido;
+		throw Invalida("Anno Invalido");
 	}
 }
 
@@ -56,8 +53,8 @@ int Fecha::ultimo_dia() const
 		}
 	}
 	
-	//estará mal el mes
-	return 0;
+	//el mes no es valido entonces
+	throw Invalida("Mes Invalido");
 }
 
 //-------------------METODOS PUBLICOS----------------------
@@ -93,8 +90,7 @@ Fecha::Fecha(const char* c)
 {
 	if(sscanf(c,"%d/%d/%d",&d,&m,&a)!=3)
 	{
-		Fecha::Invalida formato_invalido("formato incorrecto");
-		throw formato_invalido;
+		throw Invalida("Formato Invalido");
 	}
 	std::time_t tiempo = std::time(nullptr);
 	std::tm* tiempo_descompuesto = std::localtime(&tiempo);
@@ -126,7 +122,7 @@ const char* Fecha::cadena() const
 	f.tm_mon = m - 1;
 	f.tm_year = a - 1900;
 	mktime(&f);
-	strftime(aux,100,"%A %e de %B de %Y",f);
+	strftime(aux,100,"%A %e de %B de %Y",&f);
 	return aux;
 }
 
@@ -160,7 +156,7 @@ Fecha& Fecha::operator ++()
 	return *this;
 } 
 
-Fecha& Fecha::operator ++(int)
+Fecha Fecha::operator ++(int)
 {
 	Fecha *f = new Fecha(*this);
 	*this += 1;
@@ -173,7 +169,7 @@ Fecha& Fecha::operator --()
 	return *this;	
 }
 
-Fecha& Fecha::operator --(int)
+Fecha Fecha::operator --(int)
 {
 	Fecha *f = new Fecha(*this);
 	*this += -1;
@@ -238,6 +234,7 @@ std::ostream& operator <<(std::ostream& os, const Fecha& f) noexcept
 
 std::istream& operator >>(std::istream& is, Fecha& f)
 {
+	
 	//dd/mm/aaaa son 10 caracteres mas el caracter terminador
 	char linea[11];
 	is.getline(linea,11);
@@ -250,6 +247,7 @@ std::istream& operator >>(std::istream& is, Fecha& f)
 		is.setstate(std::ios::failbit);
 		throw e;
 	}
+
 	return is;
 }
 

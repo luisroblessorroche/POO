@@ -31,11 +31,12 @@ class Cadena
 };
 
 bool operator ==(const Cadena& cad1, const Cadena& cad2);
-bool operator !=(const Cadena& cad1, const Cadena& cad2);
-bool operator <(const Cadena& cad1, const Cadena& cad2);
-bool operator >(const Cadena& cad1, const Cadena& cad2);
-bool operator <=(const Cadena& cad1, const Cadena& cad2);
-bool operator >=(const Cadena& cad1, const Cadena& cad2);
+bool operator ==(const char* cad1, const char* cad2);
+//bool operator !=(const Cadena& cad1, const Cadena& cad2);
+//bool operator <(const Cadena& cad1, const Cadena& cad2);
+//bool operator >(const Cadena& cad1, const Cadena& cad2);
+//bool operator <=(const Cadena& cad1, const Cadena& cad2);
+//bool operator >=(const Cadena& cad1, const Cadena& cad2);
 
 Cadena operator +(const Cadena& cad1, const Cadena& cad2);
 

@@ -11,18 +11,15 @@ void Fecha::comprobar_validez()
 {
 	if(d > ultimo_dia() || d < 1)
 	{
-		Fecha::Invalida dia_invalido("Dia Invalido");
-		throw dia_invalido;
+		throw Invalida("Dia invalido");
 	}
 	if(m < 1 || m > 12)
 	{
-		Fecha::Invalida mes_invalido("Mes invalido");
-		throw mes_invalido;
+		throw Invalida("Mes invalido");
 	}
 	if(a < Fecha::AnnoMinimo || a > Fecha::AnnoMaximo)
 	{
-		Fecha::Invalida anno_invalido("Anno Invalido");
-		throw anno_invalido;
+		throw Invalida("Anno invalido");
 	}
 }
 
@@ -48,7 +45,7 @@ int Fecha::ultimo_dia() const
 		}
 	}
 	
-	return 0;
+	throw Invalida("Mes incorrecto");
 }
 
 //-------------------METODOS PUBLICOS----------------------
@@ -65,6 +62,13 @@ Fecha::Fecha(int dia, int mes, int anno): d{dia},m{mes},a{anno}
 	if(d == 0){d = tiempo_descompuesto->tm_mday;}
 	comprobar_validez();
 }
+
+/*
+Fecha::Fecha(const Fecha& F): d{F.d},m{F.m},a{F.a}
+{
+	comprobar_validez();
+}
+*/
 
 Fecha::Fecha(const char* c)
 {
@@ -112,6 +116,7 @@ Fecha::operator const char*() const
 
 Fecha& Fecha::operator +=(int i)
 {
+
 	std::tm f{};
 	f.tm_mday = d + i;
 	f.tm_mon = m - 1;
@@ -124,6 +129,7 @@ Fecha& Fecha::operator +=(int i)
 	
 	comprobar_validez();
 	return *this;
+	
 } 
 
 Fecha& Fecha::operator -=(int i)
@@ -206,9 +212,6 @@ bool operator >=(const Fecha& f1, const Fecha& f2)
 	return ((f1 > f2) || (f1 == f2));
 }
 
-//--------------------------CONSTRUCTOR INVALIDA-------------------------
-
-Fecha::Invalida::Invalida(const char* mot): motivo(mot){}
 
 
 

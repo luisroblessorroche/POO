@@ -24,13 +24,26 @@ Cadena::Cadena(const char* cad): s_{new char[strlen(cad)+1]}, tam_{strlen(cad)}
 	strcpy(s_,cad);
 }
 
-Cadena::Cadena(Cadena&& cad): s_{cad.s_}, tam_{strlen(cad)}
+Cadena::Cadena(Cadena&& cad): s_{cad.s_}, tam_{cad.tam_}
 {
 	cad.tam_ = 0;
 	cad.s_ = nullptr;
 }
 
 Cadena& Cadena::operator =(const Cadena& cad)
+{
+	if(this != &cad)
+	{
+		tam_ = cad.tam_;
+		delete[] s_;
+		s_ = new char[tam_+1];
+		strcpy(s_,cad.s_);
+	}
+	return *this;
+} 
+
+
+Cadena& Cadena::operator =(Cadena&& cad)
 {
 	if(this != &cad)
 	{
@@ -65,9 +78,10 @@ Cadena operator +(const Cadena& cad1, const Cadena& cad2)
 
 //-----------------------------OPERADORES LOGICOS------------------------------
 
+/*
 bool operator ==(const Cadena& cad1, const Cadena& cad2)
 {
-	return (strcmp(cad1,cad2) == 0);
+	return (strcmp(cad1.c_str(),cad2.c_str()) == 0);
 }
 
 bool operator !=(const Cadena& cad1, const Cadena& cad2)
@@ -77,7 +91,7 @@ bool operator !=(const Cadena& cad1, const Cadena& cad2)
 
 bool operator <(const Cadena& cad1, const Cadena& cad2)
 {
-	return (strcmp(cad1,cad2) < 0);
+	return (strcmp(cad1.c_str(),cad2.c_str()) < 0);
 }
 
 bool operator >(const Cadena& cad1, const Cadena& cad2)
@@ -94,6 +108,7 @@ bool operator >=(const Cadena& cad1, const Cadena& cad2)
 {
 	return ((cad1 > cad2) || (cad1 == cad2));
 }
+*/
 
 
 //----------------------------FUNCIONES AT--------------------------------
@@ -140,7 +155,7 @@ Cadena Cadena::substr(size_t i, size_t t) const
 
 //---------------------ENTRADA/SALIDA--------------------------
 
-std::omstream& operator <<(std::ostream& os, const Cadena& cad) noexcept
+std::ostream& operator <<(std::ostream& os, const Cadena& cad) noexcept
 {
 	os << cad.c_str();
 	return os;
@@ -148,7 +163,7 @@ std::omstream& operator <<(std::ostream& os, const Cadena& cad) noexcept
 
 std::istream& operator >>(std::istream& is, Cadena& cad)
 {
-	char linea[33]="";//¿cómo que 33?
+	char linea[33]="";//¿cómo que 33? = limite de 32 caracteres + el caracter terminador
 	is.width(33);
 	is >> linea;
 	cad = linea;

@@ -19,6 +19,7 @@ Cadena::Cadena(const Cadena& cad): s_{new char[cad.tam_ + 1]}, tam_{cad.tam_}
 	strcpy(s_,cad.s_);
 }
 
+
 Cadena::Cadena(const char* cad): s_{new char[strlen(cad)+1]}, tam_{strlen(cad)}
 {
 	strcpy(s_,cad);
@@ -26,13 +27,10 @@ Cadena::Cadena(const char* cad): s_{new char[strlen(cad)+1]}, tam_{strlen(cad)}
 
 Cadena& Cadena::operator =(const Cadena& cad)
 {
-	if(this != &cad)
-	{
-		delete[] s_;
-		s_ = new char[cad.tam_ + 1];
-		tam_ = cad.tam_;
-		strcpy(s_,cad.s_);
-	}
+	delete[] s_;
+	s_ = new char[cad.tam_ + 1];
+	tam_ = cad.tam_;
+	strcpy(s_,cad.s_);
 	return *this;
 }
 
@@ -58,11 +56,18 @@ Cadena operator +(const Cadena& cad1, const Cadena& cad2)
 
 //-----------------------------OPERADORES LOGICOS------------------------------
 
+
 bool operator ==(const Cadena& cad1, const Cadena& cad2)
+{
+	return ((const char*)cad1 == (const char*)cad2);
+	//return (strcmp((const char*)cad1,(const char*)cad2) == 0);
+}
+
+bool operator ==(const char* cad1, const char* cad2)
 {
 	return (strcmp(cad1,cad2) == 0);
 }
-
+/*
 bool operator !=(const Cadena& cad1, const Cadena& cad2)
 {
 	return !(cad1 == cad2);
@@ -70,7 +75,7 @@ bool operator !=(const Cadena& cad1, const Cadena& cad2)
 
 bool operator <(const Cadena& cad1, const Cadena& cad2)
 {
-	return (strcmp(cad1,cad2) < 0);
+	return (strcmp(cad1.char*(),cad2.char*()) < 0);
 }
 
 bool operator >(const Cadena& cad1, const Cadena& cad2)
@@ -88,7 +93,7 @@ bool operator >=(const Cadena& cad1, const Cadena& cad2)
 	return ((cad1 > cad2) || (cad1 == cad2));
 }
 
-
+*/
 //----------------------------FUNCIONES AT--------------------------------
 
 char& Cadena::at(size_t i)

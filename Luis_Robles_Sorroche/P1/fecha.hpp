@@ -9,7 +9,8 @@ class Fecha
 		explicit Fecha(int dia = 0, int mes = 0, int anno = 0);
 		Fecha(const Fecha& f) = default;
 		Fecha(const char* c);
-		Fecha& operator = (const Fecha&) = default;
+		
+		Fecha& operator = (const Fecha& f) = default;
 		
 		const char* cadena() const;
 		
@@ -19,8 +20,8 @@ class Fecha
 		class Invalida
 		{
 			public:
-				Invalida(const char* inf);
-				const char* por_que() const;
+				Invalida(const char* inf): motivo{inf}{}
+				const char* por_que() const {return motivo;}
 			private:
 				const char* motivo;
 		};
@@ -57,22 +58,9 @@ bool operator <=(const Fecha& f1, const Fecha& f2);
 bool operator >=(const Fecha& f1, const Fecha& f2);
 
 
-inline Fecha::Invalida::Invalida(const char* text): motivo(text){}
-
-inline int Fecha::dia() const noexcept
-{
-	return d;
-}
-
-inline int Fecha::mes() const noexcept
-{
-	return m;
-}
-
-inline int Fecha::anno() const noexcept
-{
-	return a;
-}
+inline int Fecha::dia() const noexcept{return d;}
+inline int Fecha::mes() const noexcept{return m;}
+inline int Fecha::anno() const noexcept{return a;}
 
 std:: ostream& operator <<(std::ostream& os, const Fecha& f) noexcept;
 std::istream& operator >>(std::istream& is, Fecha& f);

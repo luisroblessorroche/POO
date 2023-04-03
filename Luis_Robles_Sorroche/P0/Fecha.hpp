@@ -7,6 +7,7 @@ class Fecha
 		explicit Fecha(int dia = 0, int mes = 0, int anno = 0);
 		Fecha(const Fecha& f) = default;
 		Fecha(const char* c);
+		
 		Fecha& operator = (const Fecha&) = default;
 		
 		operator const char*() const;
@@ -17,8 +18,8 @@ class Fecha
 		class Invalida
 		{
 			public:
-				Invalida(const char* inf);
-				const char* por_que() const;
+				Invalida(const char* inf): motivo{inf}{};
+				const char* por_que() const {return motivo;}
 			private:
 				const char* motivo;
 		};
@@ -54,11 +55,6 @@ bool operator >(const Fecha& f1, const Fecha& f2);
 bool operator <=(const Fecha& f1, const Fecha& f2);
 bool operator >=(const Fecha& f1, const Fecha& f2);
 
-
-inline const char* Fecha::Invalida::por_que() const
-{
-	return motivo;
-}
 
 inline int Fecha::dia() const noexcept
 {
