@@ -2,7 +2,9 @@
 #include <iostream>
 #include <cstring>
 #include <stdexcept>
-
+#include <cstdio>
+#include <stdlib.h>
+#include <malloc.h>
 //--------------------------CONSTRUCTORES---------------------------------
 
 Cadena::Cadena(size_t t, char c): s_{new char[t+1]},tam_{t}
@@ -24,11 +26,13 @@ Cadena::Cadena(const char* cad): s_{new char[strlen(cad)+1]}, tam_{strlen(cad)}
 	strcpy(s_,cad);
 }
 
+
 Cadena::Cadena(Cadena&& cad): s_{cad.s_}, tam_{cad.tam_}
 {
 	cad.tam_ = 0;
-	cad.s_ = nullptr;
+	cad.s_ = strdup("");
 }
+
 
 Cadena& Cadena::operator =(const Cadena& cad)
 {
@@ -45,12 +49,13 @@ Cadena& Cadena::operator =(const Cadena& cad)
 
 Cadena& Cadena::operator =(Cadena&& cad)
 {
+	
 	if(this != &cad)
 	{
 		tam_ = cad.tam_;
 		delete[] s_;
 		s_ = cad.s_;
-		cad.s_ = nullptr;
+		cad.s_ = strdup("");
 		cad.tam_ = 0;
 	}
 	return *this;
@@ -78,38 +83,30 @@ Cadena operator +(const Cadena& cad1, const Cadena& cad2)
 
 //-----------------------------OPERADORES LOGICOS------------------------------
 
-/*
-bool operator ==(const Cadena& cad1, const Cadena& cad2)
-{
-	return (strcmp(cad1.c_str(),cad2.c_str()) == 0);
-}
 
-bool operator !=(const Cadena& cad1, const Cadena& cad2)
-{
-	return !(cad1 == cad2);
-}
+bool operator ==(const Cadena& cad1, const Cadena& cad2){return (strcmp(cad1.c_str(),cad2.c_str()) == 0);}
+bool operator ==(const Cadena& cad1, const char* cad2){return Cadena(cad1) == Cadena(cad2);}
+bool operator ==(const char* cad1, const Cadena& cad2){return Cadena(cad1) == Cadena(cad2);}
 
-bool operator <(const Cadena& cad1, const Cadena& cad2)
-{
-	return (strcmp(cad1.c_str(),cad2.c_str()) < 0);
-}
+bool operator !=(const Cadena& cad1, const Cadena& cad2){return !(cad1 == cad2);}
+bool operator !=(const Cadena& cad1, const char* cad2){return !(cad1 == cad2);}
+bool operator !=(const char* cad1, const Cadena& cad2){return !(cad1 == cad2);}
 
-bool operator >(const Cadena& cad1, const Cadena& cad2)
-{
-	return cad2 < cad1;
-}
+bool operator <(const Cadena& cad1, const Cadena& cad2){return (strcmp(cad1.c_str(),cad2.c_str()) < 0);}
+bool operator <(const Cadena& cad1, const char* cad2){return Cadena(cad1) < Cadena(cad2);}
+bool operator <(const char* cad1, const Cadena& cad2){return Cadena(cad1) < Cadena(cad2);}
 
-bool operator <=(const Cadena& cad1, const Cadena& cad2)
-{
-	return ((cad1 < cad2) || (cad1 == cad2));
-}
+bool operator >(const Cadena& cad1, const Cadena& cad2){return cad2 < cad1;}
+bool operator >(const Cadena& cad1, const char* cad2){return cad2 < cad1;}
+bool operator >(const char* cad1, const Cadena& cad2){return cad2 < cad1;}
 
-bool operator >=(const Cadena& cad1, const Cadena& cad2)
-{
-	return ((cad1 > cad2) || (cad1 == cad2));
-}
-*/
+bool operator <=(const Cadena& cad1, const Cadena& cad2){return (cad1 < cad2) || (cad1 == cad2);}
+bool operator <=(const Cadena& cad1, const char* cad2){return (cad1 < cad2) || (cad1 == cad2);}
+bool operator <=(const char* cad1, const Cadena& cad2){return (cad1 < cad2) || (cad1 == cad2);}
 
+bool operator >=(const Cadena& cad1, const Cadena& cad2){return (cad2 < cad1) || (cad1 == cad2);}
+bool operator >=(const Cadena& cad1, const char* cad2){return (cad2 < cad1) || (cad1 == cad2);}
+bool operator >=(const char* cad1, const Cadena& cad2){return (cad2 < cad1) || (cad1 == cad2);}
 
 //----------------------------FUNCIONES AT--------------------------------
 
@@ -163,7 +160,7 @@ std::ostream& operator <<(std::ostream& os, const Cadena& cad) noexcept
 
 std::istream& operator >>(std::istream& is, Cadena& cad)
 {
-	char linea[33]="";//¿cómo que 33? = limite de 32 caracteres + el caracter terminador
+	char linea[33]="";//¿cómo que 33?
 	is.width(33);
 	is >> linea;
 	cad = linea;

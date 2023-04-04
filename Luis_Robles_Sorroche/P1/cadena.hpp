@@ -55,7 +55,8 @@ class Cadena
 		reverse_iterator rend() noexcept;
 		const_reverse_iterator rend() const noexcept;
 		const_iterator cend() const noexcept;
-		const_reverse_iterator crend() const noexcept; 
+		const_reverse_iterator crend() const noexcept;
+
 		
 		//destructor
 		~Cadena();
@@ -65,14 +66,31 @@ class Cadena
 		size_t tam_;
 };
 
-/*
-bool operator ==(const Cadena& cad1, const Cadena& cad2) noexcept;
-bool operator !=(const Cadena& cad1, const Cadena& cad2) noexcept;
-bool operator <(const Cadena& cad1, const Cadena& cad2) noexcept;
-bool operator >(const Cadena& cad1, const Cadena& cad2) noexcept;
-bool operator <=(const Cadena& cad1, const Cadena& cad2) noexcept;
-bool operator >=(const Cadena& cad1, const Cadena& cad2) noexcept;
-*/
+
+bool operator ==(const Cadena& cad1, const Cadena& cad2);
+bool operator ==(const Cadena& cad1, const char* cad2);
+bool operator ==(const char* cad1, const Cadena& cad2);
+
+bool operator !=(const Cadena& cad1, const Cadena& cad2);
+bool operator !=(const Cadena& cad1, const char* cad2);
+bool operator !=(const char* cad1, const Cadena& cad2);
+
+bool operator <(const Cadena& cad1, const Cadena& cad2);
+bool operator <(const Cadena& cad1, const char* cad2);
+bool operator <(const char* cad1, const Cadena& cad2);
+
+bool operator >(const Cadena& cad1, const Cadena& cad2);
+bool operator >(const Cadena& cad1, const char* cad2);
+bool operator >(const char* cad1, const Cadena& cad2);
+
+bool operator <=(const Cadena& cad1, const Cadena& cad2);
+bool operator <=(const Cadena& cad1, const char* cad2);
+bool operator <=(const char* cad1, const Cadena& cad2);
+
+bool operator >=(const Cadena& cad1, const Cadena& cad2);
+bool operator >=(const Cadena& cad1, const char* cad2);
+bool operator >=(const char* cad1, const Cadena& cad2);
+
 
 //operador de concatenacion de cadena
 Cadena operator +(const Cadena& cad1, const Cadena& cad2);
@@ -90,16 +108,22 @@ std::ostream& operator <<(std::ostream& os, const Cadena& cad) noexcept;
 std::istream& operator >>(std::istream& is, Cadena& cad);
 
 //---------------ITERADORES----------------------
+
 inline Cadena::iterator Cadena::begin() noexcept{return s_;}
 inline Cadena::iterator Cadena::end() noexcept{return s_+tam_;}
+
 inline Cadena::const_iterator Cadena::begin() const noexcept{return const_iterator(s_);}
 inline Cadena::const_iterator Cadena::end() const noexcept{return const_iterator(s_+tam_);}
+
 inline Cadena::reverse_iterator Cadena::rbegin() noexcept{return reverse_iterator(end());}
 inline Cadena::reverse_iterator Cadena::rend() noexcept{return reverse_iterator(begin());}
+
 inline Cadena::const_reverse_iterator Cadena::rbegin() const noexcept{return const_reverse_iterator(end());}
 inline Cadena::const_reverse_iterator Cadena::rend() const noexcept{return const_reverse_iterator(begin());}
+
 inline Cadena::const_iterator Cadena::cbegin() const noexcept{return const_iterator(s_);}
 inline Cadena::const_iterator Cadena::cend() const noexcept{return const_iterator(s_+tam_);}
+
 inline Cadena::const_reverse_iterator Cadena::crbegin() const noexcept{return const_reverse_iterator(end());}
 inline Cadena::const_reverse_iterator Cadena::crend() const noexcept{return const_reverse_iterator(begin());}
 
