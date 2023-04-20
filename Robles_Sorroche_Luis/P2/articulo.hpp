@@ -13,8 +13,7 @@
 class Articulo
 {
 	public:
-		Articulo(Cadena r, Cadena t, Fecha f, double p, size_t e = 0): 
-		referencia_{r}, titulo_{t}, f_publi_{f}, precio_{p}, stock_{e}{}
+		Articulo(Cadena r, Cadena t, Fecha f, double p, size_t e = 0);
 		
 		const Cadena& referencia() const noexcept{return referencia_;}
 		const Cadena& titulo() const noexcept{return titulo_;}
